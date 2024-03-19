@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dave/jennifer/jen"
 	. "github.com/dave/jennifer/jen"
 	"github.com/iancoleman/strcase"
 	"github.com/threeport/threeport/internal/sdk"
@@ -81,7 +80,7 @@ func (cc *ControllerConfig) Reconcilers() error {
 					Case(Op("<-").Id("r").Dot("Shutdown")).Block(
 						Id("shutdown").Op("=").Lit(true),
 					),
-					Default().BlockFunc(func(g *jen.Group) {
+					Default().BlockFunc(func(g *Group) {
 						g.Comment("pull message off queue")
 						g.Id("msg").Op(":=").Id("r").Dot("PullMessage").Call()
 						g.If(Id("msg").Op("==").Nil()).Block(
@@ -605,7 +604,7 @@ func (cc *ControllerConfig) ExtensionReconcilers(modulePath string) error {
 					Case(Op("<-").Id("r").Dot("Shutdown")).Block(
 						Id("shutdown").Op("=").Lit(true),
 					),
-					Default().BlockFunc(func(g *jen.Group) {
+					Default().BlockFunc(func(g *Group) {
 						g.Comment("pull message off queue")
 						g.Id("msg").Op(":=").Id("r").Dot("PullMessage").Call()
 						g.If(Id("msg").Op("==").Nil()).Block(
@@ -1077,7 +1076,7 @@ func (cc *ControllerConfig) ExtensionReconcilers(modulePath string) error {
 
 // GetLatestObject generates the source code for a controller's reconcile functions
 // to get the latest object if the "persist" field is not present or set to true.
-func (cc *ControllerConfig) GetLatestObject(g *jen.Group, obj string) {
+func (cc *ControllerConfig) GetLatestObject(g *Group, obj string) {
 	// otherwise, generate the source code to retrieve the latest object
 	g.Comment("retrieve latest version of object")
 	g.Id(fmt.Sprintf(

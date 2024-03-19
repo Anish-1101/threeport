@@ -5,7 +5,6 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/dave/jennifer/jen"
 	. "github.com/dave/jennifer/jen"
 	"github.com/gertd/go-pluralize"
 	"github.com/iancoleman/strcase"
@@ -330,7 +329,7 @@ func (cc *ControllerConfig) MainPackage() error {
 
 		For(
 			Id("_").Op(",").Id("r").Op(":=").Range().Id("reconcilerConfigs"),
-		).BlockFunc(func(g *jen.Group) {
+		).BlockFunc(func(g *Group) {
 			cc.ConfigurePullSubscription(g, durable)
 			g.Line().Comment("create exit channel")
 			g.Id("shutdownChan").Op(":=").Make(Chan().Bool(), Lit(1))
@@ -786,7 +785,7 @@ func (cc *ControllerConfig) ExtensionMainPackage(modulePath string) error {
 
 		For(
 			Id("_").Op(",").Id("r").Op(":=").Range().Id("reconcilerConfigs"),
-		).BlockFunc(func(g *jen.Group) {
+		).BlockFunc(func(g *Group) {
 			cc.ConfigurePullSubscription(g, durable)
 			g.Line().Comment("create exit channel")
 			g.Id("shutdownChan").Op(":=").Make(Chan().Bool(), Lit(1))
@@ -914,7 +913,7 @@ func (cc *ControllerConfig) ExtensionMainPackage(modulePath string) error {
 }
 
 // ConfigurePullSubscription adds a durable consumer to a controller's main package.
-func (cc *ControllerConfig) ConfigurePullSubscription(g *jen.Group, durable bool) {
+func (cc *ControllerConfig) ConfigurePullSubscription(g *Group, durable bool) {
 	consumer := Lit("")
 	if durable {
 		consumer = Id("consumer")
