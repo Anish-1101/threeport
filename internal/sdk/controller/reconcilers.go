@@ -1100,10 +1100,7 @@ func (cc *ControllerConfig) GetLatestObject(g *Group, obj string) {
 			"fmt", "Sprintf",
 		).Call(
 			Line().Lit("object with ID %d no longer exists - halting reconciliation"),
-			Line().Op("*").Id(fmt.Sprintf(
-				"%s",
-				strcase.ToLowerCamel(obj),
-			)).Dot("ID"),
+			Line().Op("*").Id(strcase.ToLowerCamel(obj)).Dot("ID"),
 			Line(),
 		)),
 		Id("r").Dot("ReleaseLock").Call(Op("&").Id(strcase.ToLowerCamel(obj)), Id("lockReleased"), Id("msg"), Lit(true)),
